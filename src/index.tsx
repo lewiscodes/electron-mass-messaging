@@ -1,12 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { AnyAction, Store } from 'redux';
 import './index.css';
 import Router from './router';
 import * as serviceWorker from './serviceWorker';
+import configureStore from './store';
+import { IReduxStore } from './store/types';
+
+const store: Store<IReduxStore, AnyAction> & { dispatch: unknown } = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router />
+    <Provider store={store}>
+      <Router />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

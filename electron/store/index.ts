@@ -1,5 +1,5 @@
 import { createStore, combineReducers, applyMiddleware, AnyAction, Store } from 'redux';
-import { IReduxStore } from '../../types';
+import { IReduxStore } from './types';
 import { resourcesReducer, subscriptionReducer } from './reducers';
 import { electronReduxMiddleware } from './middleware';
 

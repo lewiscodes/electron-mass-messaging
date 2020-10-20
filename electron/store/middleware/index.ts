@@ -1,7 +1,7 @@
 import { webContents } from 'electron';
 import { RootStateOrAny } from 'react-redux';
 import { Middleware } from 'redux';
-import { IStore } from '../../../types';
+import { IStore } from '../types';
 
 export const electronReduxMiddleware: Middleware<{}, RootStateOrAny> = store => next => action => {
     // const stateBeforeAction = store.getState();

@@ -3,8 +3,8 @@ import { IpcMainEvent } from 'electron/main';
 import configureStore from './store';
 import { setResources } from './store/actions/resources';
 import { setSubscription } from './store/actions/subscriptions';
-import { IStore } from '../types';
-import { generateResources } from './utils/resources';
+import { IStore } from './store/types';
+import { generateResources, moveResources } from './utils/resources';
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
@@ -44,15 +44,13 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-    const resources = generateResources(1);
+    const resources = generateResources(1000);
     store.dispatch(setResources(resources));
     createWindow();
-    // let x = 2;
-    // setInterval(() => {
-    //     const newResources = generateResources(x);
-    //     store.dispatch(setResources(newResources));
-    //     x++;
-    // }, 200);
+    setInterval(() => {
+        const newResources = moveResources(store.getState().resources.items);
+        store.dispatch(setResources(newResources));
+    }, 50);
 });
 
 ipcMain.on('RESOURCES_SUBSCRIBE', (event: IpcMainEvent) => {

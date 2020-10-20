@@ -1,19 +1,54 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Dispatch } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { ipcRenderer } from 'electron';
+import { IpcRendererEvent } from 'electron/main';
 import 'ol/ol.css';
-import { Map, View, MapBrowserEvent } from 'ol';
-import TileLayer from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
+import { Map, View, MapBrowserEvent, Feature } from 'ol';
+import { setResources } from '../../store/actions/resources';
+import { IResource } from '../../../globalTypes/resources';
+import { IReduxStore } from '../../store/types';
+import {Circle as CircleStyle, Fill, Style} from 'ol/style';
+import {OSM, Vector as VectorSource} from 'ol/source';
+import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
+import Point from 'ol/geom/Point';
 
 const MapPage = ({ children }: { children: JSX.Element }) => {
+    const dispatch: Dispatch<any> = useDispatch();
     const mapRef = useRef(null);
+    const resources = useSelector((state: IReduxStore) => state.resources.items);
+    const [map, setMap] = useState<Map>();
+    const [vectorLayer, setVectorLayer] = useState<VectorLayer>()
+
 
     useEffect(() => {
+        ipcRenderer.send('RESOURCES_SUBSCRIBE');
+        ipcRenderer.on('RESOURCES_SUBSCRIBE_RESPONSE', (_e: IpcRendererEvent, args: { items: IResource[]}) => {
+            dispatch(setResources(args.items));
+        });
+        ipcRenderer.on('RESOURCES_UPDATE', (_e: IpcRendererEvent, args: { items: IResource[] }) => {
+            dispatch(setResources(args.items));
+        });
+
+        const source = new VectorSource();
+        const vector = new VectorLayer({
+            source: source,
+            style: new Style({
+                image: new CircleStyle({
+                    radius: 3,
+                    fill: new Fill({
+                        color: 'red',
+                    }),
+                }),
+            }),
+        });
+
         const map: Map = new Map({
             target: mapRef.current!,
             layers: [
                 new TileLayer({
                     source: new OSM()
-                })
+                }),
+                vector
             ],
             view: new View({
                 center: [-672.11954868456, 6711488.817310899],
@@ -21,16 +56,38 @@ const MapPage = ({ children }: { children: JSX.Element }) => {
             })
         });
 
+        setMap(map);
+        setVectorLayer(vector);
+
         map.on('click', (e: MapBrowserEvent) => {
             console.log('clickedMap', e.coordinate);
-        })
-
-        // top-left : -11062.3302079881, 6719826.438613703
-        // top-right : 15870.891661879545, 6719811.034488744
-        // bottom-right : 15832.617163585379, 6703622.7256046
-        // bottom-left : -17248.178584805773, 6703303.85387326
-
+        });
     }, []);
+
+    useEffect(() => {
+        const source = new VectorSource();
+        const vector = new VectorLayer({
+            source: source,
+            style: new Style({
+                image: new CircleStyle({
+                    radius: 5,
+                    fill: new Fill({
+                        color: 'red',
+                    }),
+                }),
+            }),
+        });
+
+        resources.forEach(resource => {
+            const point = new Point(resource.location);
+            const feature = new Feature(point);
+            source.addFeature(feature);
+        });
+
+        map?.removeLayer(vectorLayer!);
+        map?.addLayer(vector);
+        setVectorLayer(vector);
+    }, [resources]);
 
     return (
         <div

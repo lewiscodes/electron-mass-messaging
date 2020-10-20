@@ -1,5 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const minX = -10555.636313457067;
+const maxX = 9145.48520829907;
+const minY = 6706207.421742284;
+const maxY = 6716919.130722704;
 exports.generateResources = (numberOfResources) => {
     const resources = [];
     for (let x = 0; x < numberOfResources; x++) {
@@ -18,6 +22,24 @@ exports.generateResources = (numberOfResources) => {
     }
     return resources;
 };
+exports.moveResources = (resources) => {
+    return resources.map(resource => {
+        return Object.assign(Object.assign({}, resource), { location: randomlyMoveLocation(resource.location) });
+    });
+};
+const randomlyMoveLocation = (currentLocation) => {
+    const xOrYCoordinate = getRandomNumber(2); // 1 = x, 2 = y
+    const plusOrMinus = getRandomNumber(2); // 1 = plus, 2 = minus
+    let x = currentLocation[0];
+    let y = currentLocation[1];
+    if (xOrYCoordinate === 1) {
+        x = plusOrMinus === 1 ? x + 50 : x - 50;
+    }
+    else {
+        y = plusOrMinus === 1 ? y + 50 : y - 50;
+    }
+    return [x, y];
+};
 const generateRandomCs = () => {
     const cs = [];
     for (let x = 0; x < 6; x++) {
@@ -28,7 +50,7 @@ const generateRandomCs = () => {
             cs.push(getLetter(getRandomNumber(26)));
         }
     }
-    return cs.join();
+    return cs.join('');
 };
 const generateRandomType = () => {
     switch (getRandomNumber(4)) {
@@ -71,10 +93,6 @@ const getRandomCoordinates = () => {
     // top-right : 9145.48520829907, 6716919.130722704
     // bottom-right : 147.052764543198, 6706485.327070707
     // bottom-left : -10480.990778022326, 6706207.421742284
-    const minX = -10555.636313457067;
-    const maxX = 9145.48520829907;
-    const minY = 6706207.421742284;
-    const maxY = 6716919.130722704;
     const differenceX = maxX - minX;
     const differenceY = maxY - minY;
     const x = minX + getRandomDecimalNumber(differenceX);
