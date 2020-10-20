@@ -1,12 +1,22 @@
 import React from 'react';
+import { ipcRenderer } from 'electron';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Map from '../components/map';
+import { IpcRendererEvent } from 'electron/main';
 
 const ResourcePage = (): JSX.Element => (
     <div>Resource Page</div>
 );
 
 const AppRouter = (): JSX.Element => {
+    ipcRenderer.send('RESOURCES_SUBSCRIBE');
+    ipcRenderer.on('RESOURCES_SUBSCRIBE_RESPONSE', (_e: IpcRendererEvent, args: any) => {
+        console.log('RESOURCES_SUBSCRIBE_RESPONSE', args);
+    });
+    ipcRenderer.on('RESOURCES_UPDATE', (_e: IpcRendererEvent, args: any) => {
+        console.log('RESOURCES_UPDATE', args);
+    });
+
     return (
         <Router>
             <Switch>

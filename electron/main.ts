@@ -1,8 +1,15 @@
-import electron from 'electron';
+import electron, { ipcMain } from 'electron';
+import { IpcMainEvent } from 'electron/main';
+import configureStore from './store';
+import { setResources } from './store/actions/resources';
+import { setSubscription } from './store/actions/subscriptions';
+import { IStore } from './store/types';
+import { generateResources } from './utils/resources';
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
+const store: IStore = configureStore();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -14,13 +21,12 @@ function createWindow() {
         width: 1600,
         height: 600,
         webPreferences: {
-            nodeIntegration: true,
-            preload: __dirname + '/preload.js'
+            nodeIntegration: true
         }
     });
 
     // and load the index.html of the app.
-    mainWindow.loadURL('http://localhost:3000');
+    mainWindow.loadURL('http://localhost:3000/map');
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
@@ -37,7 +43,22 @@ function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', () => {
+    const resources = generateResources(1);
+    store.dispatch(setResources(resources));
+    createWindow();
+    // let x = 2;
+    // setInterval(() => {
+    //     const newResources = generateResources(x);
+    //     store.dispatch(setResources(newResources));
+    //     x++;
+    // }, 200);
+});
+
+ipcMain.on('RESOURCES_SUBSCRIBE', (event: IpcMainEvent) => {
+    store.dispatch(setSubscription({ subscriptionTo: 'SET_RESOURCES', subscriptionBy: event.sender.id }));
+    event.reply('RESOURCES_SUBSCRIBE_RESPONSE', store.getState().resources);
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
