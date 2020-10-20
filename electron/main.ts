@@ -3,7 +3,7 @@ import { IpcMainEvent } from 'electron/main';
 import configureStore from './store';
 import { setResources } from './store/actions/resources';
 import { setSubscription } from './store/actions/subscriptions';
-import { IStore } from './store/types';
+import { IStore } from '../types';
 import { generateResources } from './utils/resources';
 // Module to control application life.
 const app = electron.app;

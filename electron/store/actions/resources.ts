@@ -1,4 +1,4 @@
-import { IResource } from "../types"
+import { IResource } from "../../../types/resources"
 
 export const setResources = (resources: IResource[]) => {
     return {

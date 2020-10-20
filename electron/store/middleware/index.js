@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
-exports.default = (store) => (next) => (action) => {
+exports.electronReduxMiddleware = store => next => action => {
     // const stateBeforeAction = store.getState();
     const result = next(action);
     // const stateAfterAction = store.getState();

@@ -1,4 +1,4 @@
-import { ISubscription } from "../types/subscriptions"
+import { ISubscription } from "../../../types/subscriptions"
 
 export const setSubscription = (subscription: ISubscription) => {
     return {

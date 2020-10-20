@@ -1,5 +1,4 @@
 "use strict";
-// import { IResourceState, IResourceAction } from '../types';
 Object.defineProperty(exports, "__esModule", { value: true });
 const defaultState = {
     items: []

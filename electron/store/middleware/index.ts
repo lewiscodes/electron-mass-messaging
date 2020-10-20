@@ -1,16 +1,17 @@
 import { webContents } from 'electron';
-import { AnyAction } from 'redux';
-import { IStore } from '../types'
+import { RootStateOrAny } from 'react-redux';
+import { Middleware } from 'redux';
+import { IStore } from '../../../types';
 
-export default (store: IStore) => (next: Function) => (action: AnyAction) => {
+export const electronReduxMiddleware: Middleware<{}, RootStateOrAny> = store => next => action => {
     // const stateBeforeAction = store.getState();
     const result = next(action)
     // const stateAfterAction = store.getState();
     if (action.type !== 'SUBSCRIBE') {
-        pushDataToSubscriptions(store, action.type);
+        pushDataToSubscriptions(store as IStore, action.type);
     }
     return result
-};
+}
 
 const pushDataToSubscriptions = (store: IStore, actionType: string) => {
     const subscriptions = store.getState().subscriptions.items;

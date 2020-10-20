@@ -1,4 +1,4 @@
-import { IResource } from "../store/types/resources";
+import { IResource } from "../../types/resources";
 
 export const generateResources = (numberOfResources: number): IResource[] => {
     const resources: IResource[] = [];

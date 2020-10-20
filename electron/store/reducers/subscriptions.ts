@@ -1,6 +1,4 @@
-// import { IResourceState, IResourceAction } from '../types';
-
-import { ISubscriptionAction, ISubscriptionState } from "../types/subscriptions";
+import { ISubscriptionAction, ISubscriptionState } from "../../../types/subscriptions";
 
 const defaultState: ISubscriptionState = {
     items: []
