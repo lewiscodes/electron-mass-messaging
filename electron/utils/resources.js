@@ -14,9 +14,9 @@ exports.generateResources = (numberOfResources) => {
             type: generateRandomType(),
             status: generateRandomStatus(),
             location: getRandomCoordinates(),
-            travelTime: '',
-            eta: '',
-            distance: '',
+            travelTime: generateRandomTime(),
+            eta: generateRandomEta(),
+            distance: generateRandomDistance(),
             station: 'Police Station'
         });
     }
@@ -24,8 +24,37 @@ exports.generateResources = (numberOfResources) => {
 };
 exports.moveResources = (resources) => {
     return resources.map(resource => {
-        return Object.assign(Object.assign({}, resource), { location: randomlyMoveLocation(resource.location) });
+        return Object.assign(Object.assign({}, resource), { location: randomlyMoveLocation(resource.location), travelTime: randomlyIncreaseTravelTime(resource.travelTime), eta: randomlyDecreatseEta(resource.eta) });
     });
+};
+const randomlyIncreaseTravelTime = (travelTime) => {
+    const shouldIncreaseTravelTime = getRandomNumber(9) === 1;
+    if (shouldIncreaseTravelTime) {
+        let hour = +travelTime[0];
+        let minute = +travelTime[2];
+        let second = +travelTime[3];
+        second = second === 9 ? 0 : second + 1;
+        if (second === 0) {
+            minute = minute === 9 ? 0 : minute + 1;
+            if (minute === 0) {
+                hour = hour + 1;
+            }
+        }
+        return `${hour}:${minute}${second}`;
+    }
+    return travelTime;
+};
+const randomlyDecreatseEta = (eta) => {
+    const shouldDecreaseEta = getRandomNumber(60) === 1;
+    if (shouldDecreaseEta && eta[0] !== '0') {
+        if (eta.length === 11) {
+            return `${+eta[0] - 1} minute(s)`;
+        }
+        else {
+            return `${+`${eta[0]}${eta[1]}` - 1} minute(s)`;
+        }
+    }
+    return eta;
 };
 const randomlyMoveLocation = (currentLocation) => {
     const xOrYCoordinate = getRandomNumber(2); // 1 = x, 2 = y
@@ -39,6 +68,18 @@ const randomlyMoveLocation = (currentLocation) => {
         y = plusOrMinus === 1 ? y + 50 : y - 50;
     }
     return [x, y];
+};
+const generateRandomDistance = () => {
+    return `${getRandomNumber(29) + 1} mile(s)`;
+};
+const generateRandomTime = () => {
+    const hour = getRandomNumber(9);
+    const minute = getRandomNumber(6);
+    const second = getRandomNumber(9);
+    return `${hour}:${minute}${second}`;
+};
+const generateRandomEta = () => {
+    return `${getRandomNumber(60)} minute(s)`;
 };
 const generateRandomCs = () => {
     const cs = [];

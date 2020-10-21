@@ -77,7 +77,7 @@ app.on('ready', () => {
     setInterval(() => {
         const newResources = resources_2.moveResources(store.getState().resources.items);
         store.dispatch(resources_1.setResources(newResources));
-    }, 100);
+    }, 500);
 });
 electron_1.ipcMain.on('RESOURCES_SUBSCRIBE', (event) => {
     store.dispatch(subscriptions_1.setSubscription({ subscriptionTo: 'SET_RESOURCES', subscriptionBy: event.sender.id }));

@@ -16,9 +16,9 @@ export const generateResources = (numberOfResources: number): IResource[] => {
             type: generateRandomType(),
             status: generateRandomStatus(),
             location: getRandomCoordinates(),
-            travelTime: '',
-            eta: '',
-            distance: '',
+            travelTime: generateRandomTime(),
+            eta: generateRandomEta(),
+            distance: generateRandomDistance(),
             station: 'Police Station'
         });
     }
@@ -30,9 +30,49 @@ export const moveResources = (resources: IResource[]): IResource[] => {
     return resources.map(resource => {
         return {
             ...resource,
-            location: randomlyMoveLocation(resource.location)
+            location: randomlyMoveLocation(resource.location),
+            travelTime: randomlyIncreaseTravelTime(resource.travelTime),
+            eta: randomlyDecreatseEta(resource.eta)
         }
     });
+}
+
+const randomlyIncreaseTravelTime = (travelTime: string) => {
+    const shouldIncreaseTravelTime = getRandomNumber(9) === 1;
+    
+    if (shouldIncreaseTravelTime) {
+        let hour = +travelTime[0];
+        let minute = +travelTime[2];
+        let second = +travelTime[3]
+
+        second = second === 9 ? 0 : second + 1;
+
+        if (second === 0) {
+            minute = minute === 9 ? 0 : minute + 1;
+
+            if (minute === 0) {
+                hour = hour + 1;
+            }
+        }
+
+        return `${hour}:${minute}${second}`
+    }
+
+    return travelTime;
+}
+
+const randomlyDecreatseEta = (eta: string) => {
+    const shouldDecreaseEta = getRandomNumber(60) === 1;
+
+    if (shouldDecreaseEta && eta[0] !== '0') {
+        if (eta.length === 11) {
+            return `${+eta[0] - 1} minute(s)`;
+        } else {
+            return `${+`${eta[0]}${eta[1]}` - 1} minute(s)`;
+        }
+    }
+
+    return eta;
 }
 
 const randomlyMoveLocation = (currentLocation: number[]): number[] => {
@@ -48,6 +88,22 @@ const randomlyMoveLocation = (currentLocation: number[]): number[] => {
     }
 
     return [x, y];
+}
+
+const generateRandomDistance = () => {
+    return `${getRandomNumber(29) + 1} mile(s)`
+};
+
+const generateRandomTime = () => {
+    const hour = getRandomNumber(9);
+    const minute = getRandomNumber(6);
+    const second = getRandomNumber(9);
+
+    return `${hour}:${minute}${second}`
+}
+
+const generateRandomEta = () => {
+    return `${getRandomNumber(60)} minute(s)`;
 }
 
 const generateRandomCs = (): string => {
