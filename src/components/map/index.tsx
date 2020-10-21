@@ -62,6 +62,10 @@ const MapPage = ({ children }: { children: JSX.Element }) => {
         map.on('click', (e: MapBrowserEvent) => {
             console.log('clickedMap', e.coordinate);
         });
+
+        return () => {
+            ipcRenderer.send('UNSUBSCRIBE');
+        }
     }, []);
 
     useEffect(() => {
@@ -74,7 +78,7 @@ const MapPage = ({ children }: { children: JSX.Element }) => {
                     fill: new Fill({
                         color: 'red',
                     }),
-                }),
+                })
             }),
         });
 

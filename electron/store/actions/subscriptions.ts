@@ -6,3 +6,10 @@ export const setSubscription = (subscription: ISubscription) => {
         subscription
     }
 }
+
+export const unsubscribe = (windowId: number) => {
+    return {
+        type: 'UNSUBSCRIBE',
+        windowId
+    }
+}

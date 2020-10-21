@@ -1,10 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Map from '../components/map';
-
-const ResourcePage = (): JSX.Element => (
-    <div>Resource Page</div>
-);
+import ResourcePage from '../components/resources';
 
 const AppRouter = (): JSX.Element => {
     return (

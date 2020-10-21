@@ -6,3 +6,9 @@ exports.setSubscription = (subscription) => {
         subscription
     };
 };
+exports.unsubscribe = (windowId) => {
+    return {
+        type: 'UNSUBSCRIBE',
+        windowId
+    };
+};

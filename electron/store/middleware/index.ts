@@ -7,7 +7,7 @@ export const electronReduxMiddleware: Middleware<{}, RootStateOrAny> = store => 
     // const stateBeforeAction = store.getState();
     const result = next(action)
     // const stateAfterAction = store.getState();
-    if (action.type !== 'SUBSCRIBE') {
+    if (action.type !== 'SUBSCRIBE' && action.type !== 'UNSUBSCRIBE') {
         pushDataToSubscriptions(store as IStore, action.type);
     }
     return result
@@ -20,7 +20,10 @@ const pushDataToSubscriptions = (store: IStore, actionType: string) => {
             .filter(subscription => subscription.subscriptionTo === actionType)
             .map(subscription => subscription.subscriptionBy);
         windowsToSendTo.forEach(windowId => {
-            webContents.fromId(windowId).send('RESOURCES_UPDATE', getReducerFromAction(store, actionType));
+            const window = webContents.fromId(windowId);
+            if (window) {
+                window.send('RESOURCES_UPDATE', getReducerFromAction(store, actionType));
+            }
         })
     }
 }

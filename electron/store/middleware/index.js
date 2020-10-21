@@ -5,7 +5,7 @@ exports.electronReduxMiddleware = store => next => action => {
     // const stateBeforeAction = store.getState();
     const result = next(action);
     // const stateAfterAction = store.getState();
-    if (action.type !== 'SUBSCRIBE') {
+    if (action.type !== 'SUBSCRIBE' && action.type !== 'UNSUBSCRIBE') {
         pushDataToSubscriptions(store, action.type);
     }
     return result;
@@ -17,7 +17,10 @@ const pushDataToSubscriptions = (store, actionType) => {
             .filter(subscription => subscription.subscriptionTo === actionType)
             .map(subscription => subscription.subscriptionBy);
         windowsToSendTo.forEach(windowId => {
-            electron_1.webContents.fromId(windowId).send('RESOURCES_UPDATE', getReducerFromAction(store, actionType));
+            const window = electron_1.webContents.fromId(windowId);
+            if (window) {
+                window.send('RESOURCES_UPDATE', getReducerFromAction(store, actionType));
+            }
         });
     }
 };

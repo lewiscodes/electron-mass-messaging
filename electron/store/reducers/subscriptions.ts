@@ -15,6 +15,11 @@ export default (state: ISubscriptionState = defaultState, action: ISubscriptionA
                 ...state,
                 items: [ ...state.items, action.subscription! ]
             };
+        case 'UNSUBSCRIBE':
+            return {
+                ...state,
+                items: state.items.filter(item => item.subscriptionBy !== action.windowId)
+            }
     default:
         return state;
     }

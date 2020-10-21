@@ -3,8 +3,9 @@ export interface ISubscriptionState {
 };
 
 export interface ISubscriptionAction {
-    type: '@@INIT' | 'SUBSCRIBE';
+    type: '@@INIT' | 'SUBSCRIBE' | 'UNSUBSCRIBE';
     subscription?: ISubscription;
+    windowId?: number;
 };
 
 export interface ISubscription {
