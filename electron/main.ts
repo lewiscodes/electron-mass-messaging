@@ -72,14 +72,14 @@ function createListWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-    const resources = generateResources(500);
+    const resources = generateResources(1000);  
     store.dispatch(setResources(resources));
     createMapWindow();
     createListWindow();
     setInterval(() => {
         const newResources = moveResources(store.getState().resources.items);
         store.dispatch(setResources(newResources));
-    }, 500);
+    }, 1000);
 });
 
 ipcMain.on('RESOURCES_SUBSCRIBE', (event: IpcMainEvent) => {

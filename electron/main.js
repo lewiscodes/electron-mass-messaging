@@ -70,14 +70,14 @@ function createListWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-    const resources = resources_2.generateResources(500);
+    const resources = resources_2.generateResources(1000);
     store.dispatch(resources_1.setResources(resources));
     createMapWindow();
     createListWindow();
     setInterval(() => {
         const newResources = resources_2.moveResources(store.getState().resources.items);
         store.dispatch(resources_1.setResources(newResources));
-    }, 500);
+    }, 1000);
 });
 electron_1.ipcMain.on('RESOURCES_SUBSCRIBE', (event) => {
     store.dispatch(subscriptions_1.setSubscription({ subscriptionTo: 'SET_RESOURCES', subscriptionBy: event.sender.id }));
