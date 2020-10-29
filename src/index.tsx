@@ -10,8 +10,6 @@ import { IReduxStore } from './store/types';
 
 const store: Store<IReduxStore, AnyAction> & { dispatch: unknown } = configureStore();
 
-console.log('starting react app...');
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

@@ -18,4 +18,5 @@ export interface IResource {
     readonly eta: string;
     readonly distance: string;
     readonly station: string;
+    readonly securityLevel: number;
 };

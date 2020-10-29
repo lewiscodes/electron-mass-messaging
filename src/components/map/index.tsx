@@ -21,7 +21,6 @@ const MapPage = ({ children }: { children: JSX.Element }) => {
 
 
     useEffect(() => {
-        console.log('loading map component...');
         ipcRenderer.send('RESOURCES_SUBSCRIBE');
         ipcRenderer.on('RESOURCES_SUBSCRIBE_RESPONSE', (_e: IpcRendererEvent, args: { items: IResource[]}) => {
             dispatch(setResources(args.items));

@@ -79,7 +79,7 @@ app.on('ready', () => {
     setInterval(() => {
         const newResources = moveResources(store.getState().resources.items);
         store.dispatch(setResources(newResources));
-    }, 1000);
+    }, 500);
 });
 
 ipcMain.on('RESOURCES_SUBSCRIBE', (event: IpcMainEvent) => {

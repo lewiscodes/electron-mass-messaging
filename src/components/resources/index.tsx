@@ -13,7 +13,6 @@ const Resources = (): JSX.Element => {
     const [tableBody, setTableBody] = useState(<tbody></tbody>);
 
     useEffect(() => {
-        console.log('loading resource component');
         ipcRenderer.send('RESOURCES_SUBSCRIBE');
 
         ipcRenderer.on('RESOURCES_SUBSCRIBE_RESPONSE', (_e: IpcRendererEvent, args: { items: IResource[]}) => {

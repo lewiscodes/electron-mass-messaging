@@ -19,7 +19,8 @@ export const generateResources = (numberOfResources: number): IResource[] => {
             travelTime: generateRandomTime(),
             eta: generateRandomEta(),
             distance: generateRandomDistance(),
-            station: 'Police Station'
+            station: 'Police Station',
+            securityLevel: getRandomNumber(4)
         });
     }
 
