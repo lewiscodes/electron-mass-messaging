@@ -5,7 +5,7 @@ import { IpcRendererEvent } from 'electron/main';
 import 'ol/ol.css';
 import { Map, View, MapBrowserEvent, Feature } from 'ol';
 import { setResources } from '../../store/actions/resources';
-import { IResource } from '../../../globalTypes/resources';
+import { IResource } from '../../store/types/resources';
 import { IReduxStore } from '../../store/types';
 import {Circle as CircleStyle, Fill, Style} from 'ol/style';
 import {OSM, Vector as VectorSource} from 'ol/source';
@@ -21,6 +21,7 @@ const MapPage = ({ children }: { children: JSX.Element }) => {
 
 
     useEffect(() => {
+        console.log('loading map component...');
         ipcRenderer.send('RESOURCES_SUBSCRIBE');
         ipcRenderer.on('RESOURCES_SUBSCRIBE_RESPONSE', (_e: IpcRendererEvent, args: { items: IResource[]}) => {
             dispatch(setResources(args.items));

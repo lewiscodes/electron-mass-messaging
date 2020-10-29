@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ipcRenderer } from 'electron';
 import { IpcRendererEvent } from 'electron/main';
-import { IResource } from '../../../globalTypes/resources';
+import { IResource } from '../../store/types/resources';
 import { useDispatch, useSelector } from 'react-redux';
 import { setResources } from '../../store/actions/resources';
 import { IReduxStore } from '../../store/types';
@@ -13,6 +13,7 @@ const Resources = (): JSX.Element => {
     const [tableBody, setTableBody] = useState(<tbody></tbody>);
 
     useEffect(() => {
+        console.log('loading resource component');
         ipcRenderer.send('RESOURCES_SUBSCRIBE');
 
         ipcRenderer.on('RESOURCES_SUBSCRIBE_RESPONSE', (_e: IpcRendererEvent, args: { items: IResource[]}) => {

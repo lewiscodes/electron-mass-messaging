@@ -1,4 +1,4 @@
-import { IResource } from "../../globalTypes/resources";
+import { IResource } from "../store/types/resources";
 
 const minX = -10555.636313457067;
 const maxX = 9145.48520829907;

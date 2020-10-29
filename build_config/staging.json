@@ -1,0 +1,11 @@
+{
+    "productName": "Electron Mass Messaging - Staging",
+    "appId": "com.lewiscodes.mass_messaging_staging",
+    "directories": {
+        "output": "dist/staging"
+    },
+    "files": [
+        "build/**/*",
+        "node_modules/**/*"
+    ]
+}

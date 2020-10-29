@@ -4,6 +4,7 @@ import configureStore from './store';
 import { setResources } from './store/actions/resources';
 import { setSubscription, unsubscribe } from './store/actions/subscriptions';
 import { IStore } from './store/types';
+import { buildRouteLocation } from './utils';
 import { generateResources, moveResources } from './utils/resources';
 // Module to control application life.
 const app = electron.app;
@@ -17,7 +18,6 @@ let mapWindow: electron.BrowserWindow | null;
 let listWindow: electron.BrowserWindow | null;
 
 function createMapWindow() {
-    
     // Create the browser window.
     mapWindow = new BrowserWindow({
         width: 1600,
@@ -28,7 +28,7 @@ function createMapWindow() {
     });
 
     // and load the index.html of the app.
-    mapWindow.loadURL('http://localhost:3000/map');
+    mapWindow.loadURL(buildRouteLocation('map'));
 
     // Open the DevTools.
     mapWindow.webContents.openDevTools();
@@ -54,7 +54,7 @@ function createListWindow() {
     });
 
     // and load the index.html of the app.
-    listWindow.loadURL('http://localhost:3000/resource');
+    listWindow.loadURL(buildRouteLocation('resource'));
 
     // Open the DevTools.
     listWindow.webContents.openDevTools();

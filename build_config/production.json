@@ -1,0 +1,11 @@
+{
+    "productName": "Electron Mass Messaging",
+    "appId": "com.lewiscodes.mass_messaging",
+    "directories": {
+        "output": "dist/prod"
+    },
+    "files": [
+        "build/**/*",
+        "node_modules/**/*"
+    ]
+}

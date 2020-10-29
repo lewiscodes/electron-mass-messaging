@@ -1,5 +1,5 @@
 import { Store, AnyAction } from 'redux';
-import { IResourceState } from '../../../globalTypes/resources';
+import { IResourceState } from './resources';
 
 export interface IReduxStore {
     readonly resources: IResourceState;

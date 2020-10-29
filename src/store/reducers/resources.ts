@@ -1,4 +1,4 @@
-import { IResourceState, IResourceAction } from '../../../globalTypes/resources';
+import { IResourceState, IResourceAction } from '../types/resources';
 
 const defaultState: IResourceState = {
     items: []
